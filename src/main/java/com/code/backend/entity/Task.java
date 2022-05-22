@@ -4,11 +4,7 @@ import com.code.backend.common.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 
@@ -18,12 +14,13 @@ import java.time.LocalDate;
 @Table(name="tasks")
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String description;
-    private LocalDate dueDate;
-    private TaskStatus status;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "name")
+	private String name;
+	private String description;
+	private LocalDate dueDate;
+	private TaskStatus status;
 
 }

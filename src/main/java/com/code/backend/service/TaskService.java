@@ -21,6 +21,12 @@ public class TaskService {
         this.taskRepo = taskRepo;
     }
 
+    /**
+     * This method is used to create new task
+     *
+     * @param taskDto - task
+     * @return - saved task
+     */
     public TaskDto createTask(TaskDto taskDto) {
         Task task = fromTaskDto(taskDto);
         task.setStatus(TaskStatus.PENDING);
@@ -28,10 +34,21 @@ public class TaskService {
         return toTaskDto(savedTask);
     }
 
+    /**
+     * This method is used to get tasks
+     *
+     * @return - task
+     */
     public List<TaskDto> getTasks() {
         return taskRepo.findAll().stream().map(this::toTaskDto).collect(Collectors.toList());
     }
 
+    /**
+     * This method is used to fetch today and tomorrow due tasks
+     *
+     * @param due
+     * @return - due task
+     */
     public List<TaskDto> getTasks(int due) {
         LocalDate now = LocalDate.now();
         if (due == 0 || due == 1) {
@@ -43,11 +60,24 @@ public class TaskService {
         return getTasks();
     }
 
+    /**
+     * This method is used to get task with id
+     *
+     * @param id
+     * @return - task with id
+     */
     public TaskDto getTask(long id) {
         Task task = taskRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task", "Id", id));
         return toTaskDto(task);
     }
 
+    /**
+     * This method is used to update task details using id
+     *
+     * @param task
+     * @param id
+     * @return - existing task
+     */
     public TaskDto updateTask(TaskDto task, long id) {
         Task existingTask = taskRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task", "Id", id));
         existingTask.setName(task.getName());
@@ -57,6 +87,12 @@ public class TaskService {
         return toTaskDto(existingTask);
     }
 
+    /**
+     * This method is used to update task status to completed
+     *
+     * @param id
+     * @return - task
+     */
     public TaskDto completeTask(long id) {
         Task existingTask = taskRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task", "Id", id));
         existingTask.setStatus(TaskStatus.COMPLETED);
@@ -64,6 +100,11 @@ public class TaskService {
         return toTaskDto(existingTask);
     }
 
+    /**
+     * This method is used to delete the task using task id
+     *
+     * @param id
+     */
     public void deleteTask(long id) {
         Task task = taskRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task", "Id", id));
         taskRepo.delete(task);
@@ -84,6 +125,7 @@ public class TaskService {
         taskDto.setName(task.getName());
         taskDto.setDescription(task.getDescription());
         taskDto.setDueDate(task.getDueDate());
+        taskDto.setStatus(task.getStatus().name());
         return taskDto;
     }
 

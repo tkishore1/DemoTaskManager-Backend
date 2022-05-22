@@ -1,6 +1,15 @@
 version: "3"
 services:
-  server:
+  mysqldb:
+    image: mysql:5.7
+    networks:
+      - springmysql-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=demotest
+      - MYSQL_DATABASE=taskdb
+      - MYSQL_USER=sa
+      - MYSQL_PASSWORD=test
+  backend:
     image: backend
     build:
       context: .
@@ -14,15 +23,14 @@ services:
       - springmysql-net
     depends_on:
       - mysqldb
-  mysqldb:
-    image: mysql:5.7
+  frontend:
+    image: "frontend"
+    container_name: "frontend"
+    ports:
+      - "80:80"
     networks:
       - springmysql-net
-    environment:
-      - MYSQL_ROOT_PASSWORD=demotest
-      - MYSQL_DATABASE=taskdb
-      - MYSQL_USER=sa
-      - MYSQL_PASSWORD=test
-
+    depends_on:
+      - backend
 networks:
   springmysql-net:
