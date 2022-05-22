@@ -2,7 +2,7 @@ package com.code.backend.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.code.backend.model.TaskDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.code.backend.model.Task;
 import com.code.backend.service.TaskService;
 
 @RestController
@@ -30,37 +29,37 @@ public class TaskController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Task> createTask(@RequestBody @Validated Task task) {
-		Task savedTask = taskService.createTask(task);
+	public ResponseEntity<TaskDto> createTask(@RequestBody @Validated TaskDto task) {
+		TaskDto savedTask = taskService.createTask(task);
 		return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public List<Task> getTasks() {
+	public List<TaskDto> getTasks() {
 		return taskService.getTasks();
 	}
 
 	@GetMapping("/filter")
-	public List<Task> filterTasks(@RequestParam int due) {
+	public List<TaskDto> filterTasks(@RequestParam int due) {
 		return taskService.getTasks(due);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Task> getTask(@PathVariable long id) {
-		Task emp = taskService.getTask(id);
-		return ResponseEntity.ok(emp);
+	public ResponseEntity<TaskDto> getTask(@PathVariable long id) {
+		TaskDto taskDto = taskService.getTask(id);
+		return ResponseEntity.ok(taskDto);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Task> updateTask(@PathVariable("id") long id, @RequestBody Task task) {
-		Task emp = taskService.updateTask(task, id);
-		return ResponseEntity.ok(emp);
+	public ResponseEntity<TaskDto> updateTask(@PathVariable("id") long id, @RequestBody TaskDto task) {
+		TaskDto taskDto = taskService.updateTask(task, id);
+		return ResponseEntity.ok(taskDto);
 	}
 
 	@PutMapping("/{id}/complete")
-	public ResponseEntity<Task> completeTask(@PathVariable("id") long id) {
-		Task emp = taskService.completeTask(id);
-		return ResponseEntity.ok(emp);
+	public ResponseEntity<TaskDto> completeTask(@PathVariable("id") long id) {
+		TaskDto taskDto = taskService.completeTask(id);
+		return ResponseEntity.ok(taskDto);
 	}
 
 	@DeleteMapping("{id}")

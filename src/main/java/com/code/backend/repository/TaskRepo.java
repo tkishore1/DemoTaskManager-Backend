@@ -1,6 +1,6 @@
 package com.code.backend.repository;
 
-import com.code.backend.model.Task;
+import com.code.backend.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
